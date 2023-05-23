@@ -32,7 +32,7 @@ module.exports = {
      password: hashPassword,
      image: ''
     }).then((data) => {
-     const token = jwt.sign({ sub: email }, JWT_SECRET, { expiresIn: '1m' });
+     const token = jwt.sign({ sub: email }, JWT_SECRET, { expiresIn: '20s' });
      res.status(200).json({
       user: {
        id: data.insertedId,

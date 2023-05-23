@@ -15,7 +15,7 @@ module.exports = {
    if (adminExist) {
     const isMatch = adminExist.password === password
     if (isMatch) {
-     const token = jwt.sign({ sub: email }, JWT_SECRET, { expiresIn: '1m' });
+     const token = jwt.sign({ sub: email }, JWT_SECRET, { expiresIn: '5m' });
      res.status(200).json({ message: 'Login successful', token: token })
     } else {
      res.status(400).json({ message: 'Invalid Password' })
