@@ -9,6 +9,9 @@ const { ObjectId } = mongoose.Types
 
 const bcrypt = require('bcryptjs')
 
+const path = require('path');
+const fs = require('fs');
+
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = process.env.JWT_SECRET
 
@@ -77,12 +80,19 @@ module.exports = {
   try {
    const { userId } = req.body;
    const imgUrl = req.file.filename;
+
+   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+   if (user && user.image) {
+     const imagePath = path.join(__dirname, '../../frontend/public/images', user.image);
+     fs.unlinkSync(imagePath);
+   }
+   
    await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { image: imgUrl } }).then()
     res.status(200).json({ success: true, imageUrl: imgUrl });
+
   } catch (err) {
    console.error(err);
    res.status(500).json({ success: false, error: 'Failed to update image URL' });
   }
-
  }
 }
